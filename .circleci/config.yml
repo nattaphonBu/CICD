@@ -19,6 +19,18 @@ jobs:
       - run:
           name: Run unittest
           command: python fizzbuzztest.py
+   build_image:
+     working_directory: ~/CICD
+     docker:
+        - image: circleci/python:3.6.1
+     steps:
+        - setup_remote_docker
+        - attach_workspace:
+            at:
+        - run:
+            docker build -t natpronto1/sayfiszz:lastest .
+            docker login -u natpronto1 -p $DOCKER_PASS
+            docker push natpronto1/satfizz:lastest
 workflows:
   version: 2
   say-fizz-pipeline:
@@ -27,3 +39,6 @@ workflows:
       - unit_tests:
           requires:
             - checkout_code
+      - build_image:
+          requires:
+            - unittest
