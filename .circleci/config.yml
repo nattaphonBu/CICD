@@ -32,16 +32,16 @@ jobs:
           docker login -u natpronto1 -p $DOCKER_PASS
           docker push natpronto1/satfizz:latest
   deploy:
-    working_directory: ~/CICD
+    working_directory: ~/sayfizz
     docker:
       - image: circleci/python:3.6.1
-    step:
+    steps:
       - setup_remote_docker
       - attach_workspace:
-        at: .
+          at: .
       - run:
-          name: Deploy to production
-          command: ./deploy
+          name: deploy via ssh
+          command: ssh ubuntu@http://54.65.68.214/ 'bash -s' < deploy.sh
         
 
 workflows:
