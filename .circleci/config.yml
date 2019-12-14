@@ -31,7 +31,7 @@ jobs:
           at: .
       - run: |
           docker build -t natpronto1/sayfizz:latest .
-          docker login -u pronto1 -p $DOCKER_PASS
+          docker login -u natpronto1 -p $DOCKER_PASS
           docker push natpronto1/sayfizz:latest
   deploy:
     working_directory: ~/sayfizz
