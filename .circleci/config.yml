@@ -1,7 +1,7 @@
 version: 2
 jobs:
   checkout_code:
-    working_directory: ~/CICD
+    working_directory: ~/sayfizz
     docker:
       - image: circleci/python:3.6.1
     steps:
@@ -9,6 +9,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
+
   unit_tests:
     working_directory: ~/sayfizz
     docker:
@@ -19,18 +20,19 @@ jobs:
       - run:
           name: Run unittest
           command: python fizzbuzztest.py
+
   build_image:
-    working_directory: ~/CICD
+    working_directory: ~/sayfizz
     docker:
       - image: circleci/python:3.6.1
     steps:
       - setup_remote_docker
       - attach_workspace:
           at: .
-      - run:
+      - run: |
           docker build -t natpronto1/sayfizz:latest .
-          docker login -u natpronto1 -p $DOCKER_PASS
-          docker push natpronto1/satfizz:latest
+          docker login -u pronto1 -p $DOCKER_PASS
+          docker push natpronto1/sayfizz:latest
   deploy:
     working_directory: ~/sayfizz
     docker:
@@ -42,8 +44,6 @@ jobs:
       - run:
           name: deploy via ssh
           command: ssh ubuntu@http://54.65.68.214/ 'bash -s' < deploy.sh
-        
-
 workflows:
   version: 2
   say-fizz-pipeline:
